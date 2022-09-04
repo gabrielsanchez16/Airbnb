@@ -11,14 +11,15 @@ const Reservations = database.define('reservations', {
     },
     userId: {
         type: DataTypes.UUID,
-        allowNull:false
+        allowNull:false,
+        field: 'user_id'
     },
     arrival: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     departure: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     accommodationId:{

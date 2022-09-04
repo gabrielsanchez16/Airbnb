@@ -39,7 +39,8 @@ const Accommodations = database.define('accommodations', {
     },
     hostId: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        field: 'host_id'
     },
     score: {
         type:DataTypes.FLOAT,

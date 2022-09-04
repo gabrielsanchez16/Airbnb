@@ -19,5 +19,10 @@ const AccommodationsImage = database.define('accomodations_images', {
         allowNull: false,
         field: 'accommodation_id'
     },
-    url: {}
+    url: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 })
+
+module.exports = AccommodationsImage
