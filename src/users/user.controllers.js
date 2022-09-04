@@ -61,17 +61,21 @@ const createUser = async (data) => {
 
     const newUser = await Users.create({
         id: uuid.v4(),
-        first_name: data.first_name,
-        last_name: data.last_name,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        gender: data.gender,
+        addres: data.addres,
         email: data.email,
         password: crypt.hashPassword(data.password),
         phone: data.phone ? data.phone : '',
-        birthday_date: data.birthday_date,
-        rol: "normal",
-        profile_image: data.profile_image,
-        country: data.country,
-        is_active: true,
+        birthdayDate: data.birthdayDate,
+        role: "normal",
+        profileImg: data.profileImg,
+        dni: data.dni,
+        status: "active",
         verified: false,
+        createdAt: data.createdAt,
+        updateAt: data.updateAt
     })
     return newUser
 };
@@ -120,7 +124,7 @@ const getUserByEmail = async (email) => {
             id: email
         },
         attributes: {
-            exclude: ['password', 'is_active']
+            exclude: ['password', 'status']
         }
     })
     return data
@@ -129,7 +133,7 @@ const getUserByEmail = async (email) => {
 
 const editProfileImg = async (userId, imgUrl) => {
         const response = await Users.update({
-            profile_image: imgUrl
+            profileImg: imgUrl
             
             },{
                 where:{

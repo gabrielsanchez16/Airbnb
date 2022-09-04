@@ -24,18 +24,28 @@ const Users = database.define('users', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    first_name: {
+    firstName: {
         allowNull: false,
+        type: DataTypes.STRING,
+        field: 'first_name'
+
+    },
+    lastName: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        field: 'last_name' 
+    },
+    gender:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    addres:{
         type: DataTypes.STRING
 
     },
-    last_name: {
-        allowNull: false,
-        type: DataTypes.STRING
-    },
     email: {
         allowNull: false,
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING,
         unique: true,
         validate: {
             isEmail: true
@@ -54,34 +64,45 @@ const Users = database.define('users', {
             max: 10
         }
     },
-    birthday_date: {
+    birthdayDate: {
         allowNull: false,
-        type: DataTypes.DATEONLY
+        type: DataTypes.DATEONLY,
+        field:  'birthday_date'
     },
     role: {
         allowNull: false,
-        type: DataTypes.STRING,
-        defaultValue: 'normal'
+        type: DataTypes.UUID,
     },
-    profile_image: {
+    profileImg: {
         type: DataTypes.STRING,
         validate: {
             isUrl: true
-        }
+        },
+        field: 'profile_img'
     },
-    country: {
-        allowNull: false,
+    dni: {
         type: DataTypes.STRING
     },
-    is_active: {
+    status: {
         allowNull: false,
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+        type: DataTypes.STRING,
+        defaultValue: 'active'
     },
     verified: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at'
+        
+    },
+    updateAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'update_at'
     }
 
 })

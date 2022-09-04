@@ -3,11 +3,12 @@ const userControllers = require('./user.controllers')
 const getAll = (req, res) => {
     const data = userControllers.getAllUsers()
         .then((response) => {
-            res.status(200).json({ 
+            res.status(200).json({
                 items: response.length,
-                users: response })
+                users: response
+            })
         })
-        .catch((err)=> {
+        .catch((err) => {
             console.log(err)
         })
 }
@@ -20,8 +21,8 @@ const getById = (req, res) => {
         .then((response) => {
             res.status(200).json(response)
         })
-        .catch((err)=> {
-            console.log({err})
+        .catch((err) => {
+            console.log({ err })
         })
 }
 
@@ -30,33 +31,36 @@ const register = (req, res) => {
     if (!data) {
         return res.status(400).json({ message: 'Missing Data' })
     } else if (
-        !data.first_name ||
-        !data.last_name ||
+        !data.firstName ||
+        !data.lastName ||
+        !data.gender ||
         !data.email ||
         !data.password ||
-        !data.birthday_date ||
-        !data.country
+        !data.phone ||
+        !data.birthdayDate
     ) {
         return res.status(400).json({
             message: 'All fiels must be completed', fields: {
-                first_name: 'string',
-                last_name: 'string',
+                firstName: 'string',
+                lastName: 'string',
+                gender: 'string',
                 email: 'example@gmail.com',
                 password: 'string',
-                birthday_date: 'DD/MM/YYYY',
-                country: 'string',
+                phone: 'string',
+                birthdayDate: 'DD/MM/YYYY'
             },
         });
     } else {
         const response = userControllers.createUser(data)
             .then((response) => {
-                res.status(201).json({ 
+                res.status(201).json({
                     message: `user created succesfuly with id: ${response.id}`,
-                     user: response })
+                    user: response
+                })
             })
-            .catch(err=> {
+            .catch(err => {
                 console.log(err)
-            }) 
+            })
     };
 
 
@@ -66,12 +70,12 @@ const remove = (req, res) => {
     const id = req.params.id;
     const data = userControllers.deleteUser(id)
         .then(response => {
-            if(response){
+            if (response) {
                 res.status(204).json();
-            }else{
-                res.status(400).json({message: "invalid ID"})
+            } else {
+                res.status(400).json({ message: "invalid ID" })
             }
-            
+
         })
 }
 
@@ -81,27 +85,28 @@ const edit = (req, res) => {
     if (!Object.keys(data).length) {
         return res.staus(400).json({ message: 'Missing Data' })
     } else if (
-        !data.first_name ||
-        !data.last_name ||
+        !data.firstName ||
+        !data.lastName ||
+        !data.gender ||
         !data.email ||
         !data.phone ||
-        !data.rol ||
-        !data.profile_image ||
-        !data.birthday_date ||
-        !data.country ||
-        !data.is_active
+        !data.profileImg ||
+        !data.addres ||
+        !data.status ||
+        !data.role
     ) {
         return res.status(400).json({
             message: 'All fiels must be completed', fields: {
-                first_name: 'string',
-                last_name: 'string',
+                firstName: 'string',
+                lastName: 'string',
+                gender: 'string',
                 email: 'example@gmail.com',
                 phone: 'string',
-                rol: 'normal',
-                profile_image: 'example.com/img/example.png',
-                birthday_date: 'DD/MM/YYYY',
-                country: 'string',
-                is_active: 'string',
+                role: 'normal',
+                profileImg: 'example.com/img/example.png',
+                birthdayDate: 'DD/MM/YYYY',
+                addres: 'string',
+                status: 'string',
             },
         });
     } else {
@@ -121,25 +126,28 @@ const editMyUser = (req, res) => {
     if (!Object.keys(data).length) {
         return res.staus(400).json({ message: 'Missing Data' })
     } else if (
-        !data.first_name ||
-        !data.last_name ||
+        !data.firstName ||
+        !data.lastName ||
+        !data.gender ||
         !data.email ||
         !data.phone ||
-        !data.profile_image ||
-        !data.birthday_date ||
-        !data.country ||
-        !data.is_active
+        !data.profileImg ||
+        !data.addres ||
+        !data.status ||
+        !data.role
     ) {
         return res.status(400).json({
             message: 'All fiels must be completed', fields: {
-                first_name: 'string',
-                last_name: 'string',
+                firstName: 'string',
+                lastName: 'string',
+                gender: 'string',
                 email: 'example@gmail.com',
                 phone: 'string',
-                profile_image: 'example.com/img/example.png',
-                birthday_date: 'DD/MM/YYYY',
-                country: 'string',
-                is_active: 'string',
+                role: 'normal',
+                profileImg: 'example.com/img/example.png',
+                birthdayDate: 'DD/MM/YYYY',
+                addres: 'string',
+                status: 'string',
             },
         });
     } else {
@@ -154,7 +162,7 @@ const editMyUser = (req, res) => {
 }
 
 
-const deleteMyUser = (req, res)=>{
+const deleteMyUser = (req, res) => {
     const id = req.user.id;
     const data = userControllers.deleteUser(id);
 
@@ -165,18 +173,18 @@ const deleteMyUser = (req, res)=>{
     }
 }
 
-const getMyUser = (req, res)=> {
+const getMyUser = (req, res) => {
     const id = req.user.id;
 
     const data = userControllers.getUserById(id)
     res.status(200).json(data)
 
-    
+
 }
 
 const postProfileImg = (req, res) => {
     const id = req.user.id;
-    const imgPath = req.hostname + ':3000' + 'api/v1/uploads/' +req.file.filename
+    const imgPath = req.hostname + ':3000' + 'api/v1/uploads/' + req.file.filename
     const data = userControllers.editProfileImg(id, imgPath)
     res.status(200).json(data)
 }
