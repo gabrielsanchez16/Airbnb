@@ -1,35 +1,32 @@
-const userControllers = require('./user.controllers')
+const userControllers = require("./user.controllers");
 
 const getAll = (req, res) => {
-    const data = userControllers.getAllUsers()
+    userControllers
+        .getAllUsers()
         .then((response) => {
             res.status(200).json({
                 items: response.length,
-                users: response
-            })
+                users: response,
+            });
         })
-        .catch((err) => {
-            console.log(err)
-        })
-}
-
+        .catch(err => res.status(400).json({ message: err }))
+};
 
 const getById = (req, res) => {
     const id = req.params.id;
 
-    const data = userControllers.getUserById(id)
+    userControllers
+        .getUserById(id)
         .then((response) => {
-            res.status(200).json(response)
+            res.status(200).json(response);
         })
-        .catch((err) => {
-            console.log({ err })
-        })
-}
+        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+};
 
 const register = (req, res) => {
     const data = req.body;
     if (!data) {
-        return res.status(400).json({ message: 'Missing Data' })
+        return res.status(400).json({ message: "Missing Data" });
     } else if (
         !data.firstName ||
         !data.lastName ||
@@ -40,50 +37,49 @@ const register = (req, res) => {
         !data.birthdayDate
     ) {
         return res.status(400).json({
-            message: 'All fiels must be completed', fields: {
-                firstName: 'string',
-                lastName: 'string',
-                gender: 'string',
-                email: 'example@gmail.com',
-                password: 'string',
-                phone: 'string',
-                birthdayDate: 'DD/MM/YYYY'
+            message: "All fiels must be completed",
+            fields: {
+                firstName: "string",
+                lastName: "string",
+                gender: "string",
+                email: "example@gmail.com",
+                password: "string",
+                phone: "string",
+                birthdayDate: "DD/MM/YYYY",
             },
         });
     } else {
-        const response = userControllers.createUser(data)
+        userControllers
+            .createUser(data)
             .then((response) => {
                 res.status(201).json({
                     message: `user created succesfuly with id: ${response.id}`,
-                    user: response
-                })
+                    user: response,
+                });
             })
-            .catch(err => {
-                console.log(err)
-            })
-    };
-
-
-}
+            .catch(err => res.status(400).json({ message: err.errors}))
+    }
+};
 
 const remove = (req, res) => {
     const id = req.params.id;
-    const data = userControllers.deleteUser(id)
-        .then(response => {
+    userControllers
+        .deleteUser(id)
+        .then((response) => {
             if (response) {
                 res.status(204).json();
             } else {
-                res.status(400).json({ message: "invalid ID" })
+                res.status(400).json({ message: "invalid ID" });
             }
-
         })
-}
+        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+};
 
 const edit = (req, res) => {
     const data = req.body;
     const id = req.params.id;
     if (!Object.keys(data).length) {
-        return res.staus(400).json({ message: 'Missing Data' })
+        return res.staus(400).json({ message: "Missing Data" });
     } else if (
         !data.firstName ||
         !data.lastName ||
@@ -96,35 +92,39 @@ const edit = (req, res) => {
         !data.role
     ) {
         return res.status(400).json({
-            message: 'All fiels must be completed', fields: {
-                firstName: 'string',
-                lastName: 'string',
-                gender: 'string',
-                email: 'example@gmail.com',
-                phone: 'string',
-                role: 'normal',
-                profileImg: 'example.com/img/example.png',
-                birthdayDate: 'DD/MM/YYYY',
-                addres: 'string',
-                status: 'string',
+            message: "All fiels must be completed",
+            fields: {
+                firstName: "string",
+                lastName: "string",
+                gender: "string",
+                email: "example@gmail.com",
+                phone: "string",
+                role: "normal",
+                profileImg: "example.com/img/example.png",
+                birthdayDate: "DD/MM/YYYY",
+                addres: "string",
+                status: "string",
             },
         });
     } else {
-        const response = userControllers.editUser(id, data)
-
-        return res.status(200).json({
-            message: 'user edited succesfuly',
-            user: response
-        })
+        userControllers
+            .editUser(id, data)
+            .then((response) => {
+                return res.status(200).json({
+                    message: "user edited succesfuly",
+                    user: response,
+                });
+            })
+            .catch(err => res.status(400).json({ message: err.errors[0].message }))
     }
-}
+};
 
 const editMyUser = (req, res) => {
-    const id = req.user.id
-    const data = req.body
+    const id = req.user.id;
+    const data = req.body;
 
     if (!Object.keys(data).length) {
-        return res.staus(400).json({ message: 'Missing Data' })
+        return res.staus(400).json({ message: "Missing Data" });
     } else if (
         !data.firstName ||
         !data.lastName ||
@@ -137,58 +137,80 @@ const editMyUser = (req, res) => {
         !data.role
     ) {
         return res.status(400).json({
-            message: 'All fiels must be completed', fields: {
-                firstName: 'string',
-                lastName: 'string',
-                gender: 'string',
-                email: 'example@gmail.com',
-                phone: 'string',
-                role: 'normal',
-                profileImg: 'example.com/img/example.png',
-                birthdayDate: 'DD/MM/YYYY',
-                addres: 'string',
-                status: 'string',
+            message: "All fiels must be completed",
+            fields: {
+                firstName: "string",
+                lastName: "string",
+                gender: "string",
+                email: "example@gmail.com",
+                phone: "string",
+                role: "normal",
+                profileImg: "example.com/img/example.png",
+                birthdayDate: "DD/MM/YYYY",
+                addres: "string",
+                status: "string",
             },
         });
     } else {
-        const response = userControllers.editUser(id, data, req.user.rol)
+        userControllers.editUser(id, data, req.user.rol)
+            .then((response) => {
+                return res.status(200).json({
+                    message: "user edited succesfuly",
+                    user: response,
+                });
+            })
+            .catch(err => res.status(400).json({ message: err.errors[0].message }))
 
-        return res.status(200).json({
-            message: 'user edited succesfuly',
-            user: response
-        })
     }
-
-}
-
+};
 
 const deleteMyUser = (req, res) => {
     const id = req.user.id;
-    const data = userControllers.deleteUser(id);
+    userControllers.deleteUser(id)
+        .then((response) => {
+            if (response) {
+                return res.status(204).json();
+            } else {
+                return res.status(400).json({ message: "Invalid id" });
+            }
+        })
+        .catch(err => res.status(400).json({ message: err.errors[0].message }))
 
-    if (data) {
-        return res.status(204).json();
-    } else {
-        return res.status(400).json({ message: "Invalid id" });
-    }
 }
 
 const getMyUser = (req, res) => {
     const id = req.user.id;
 
-    const data = userControllers.getUserById(id)
-    res.status(200).json(data)
-
-
-}
+    userControllers.getUserById(id)
+        .then((response) => {
+            if (response) {
+                return res.status(200).json(data);
+            } else {
+                return res.status(400).json({ message: "Invalid id" });
+            }
+        })
+        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+};
 
 const postProfileImg = (req, res) => {
     const id = req.user.id;
-    const imgPath = req.hostname + ':3000' + 'api/v1/uploads/' + req.file.filename
-    const data = userControllers.editProfileImg(id, imgPath)
-    res.status(200).json(data)
-}
+    const imgPath = req.hostname + ":3000" + "api/v1/uploads/" + req.file.filename;
+    userControllers.editProfileImg(id, imgPath)
+        .then((response) => {
+            res.status(200).json(data);
+        })
+        .catch(err => res.status(400).json({ message: err.errors[0].message }))
 
+};
+
+const getUserWithRol = (req, res) => {
+    const id = req.params.id
+    userControllers.getUserWithRol(id)
+        .then((response) => {
+            res.status(200).json(response)
+        })
+        .catch(err => res.status(400).json({ message: err.errors }))
+}
 
 module.exports = {
     getAll,
@@ -199,5 +221,6 @@ module.exports = {
     editMyUser,
     deleteMyUser,
     getMyUser,
-    postProfileImg
-}
+    postProfileImg,
+    getUserWithRol
+};

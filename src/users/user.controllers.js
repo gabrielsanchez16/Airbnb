@@ -1,6 +1,8 @@
 const uuid = require('uuid')
 const crypt = require('../utils/crypt.js')
 const Users = require('../models/user.model')
+const Roles = require('../models/roles.model.js')
+
 
 const userDB = [{
     "id": "c38c070f-4512-4065-bf1c-8b0d09cd4571",
@@ -35,7 +37,7 @@ const userDB = [{
 const getAllUsers = async () => {
     const data = await Users.findAll({
         attributes: {
-            exclude: ['password', 'is_active']
+            exclude: ['password', 'createdAt', 'updatedAt', 'role_id']
         }
     })
 
@@ -49,7 +51,7 @@ const getUserById = async (id) => {
             id: id
         },
         attributes: {
-            exclude: ['password', 'is_active']
+            exclude: ['password', 'createdAt', 'updatedAt', 'role_id']
         }
     })
     return data
@@ -64,18 +66,18 @@ const createUser = async (data) => {
         firstName: data.firstName,
         lastName: data.lastName,
         gender: data.gender,
-        addres: data.addres,
         email: data.email,
         password: crypt.hashPassword(data.password),
-        phone: data.phone ? data.phone : '',
+        phone: data.phone,
         birthdayDate: data.birthdayDate,
-        role: "normal",
-        profileImg: data.profileImg,
         dni: data.dni,
+        roleId: "e8a2ad1a-b06f-409f-bd20-0ca1c37d0915",
+        address: data.address,
+        profileImage: data.profileImage,
         status: "active",
         verified: false,
-        createdAt: data.createdAt,
-        updateAt: data.updateAt
+        createdAt: data.created_at,
+        updatedAt: data.updated_at
     })
     return newUser
 };
@@ -90,41 +92,42 @@ const deleteUser = async (id) => {
     return data
 }
 
-const editUser = async(userId, data, userRol) => {
-    if(userRol === 'admin'){
-       const {password,id,verified, ...newData} = data
+const editUser = async (userId, data, userRol) => {
+    const { password, id, verified, role_id, ...resOfProperties } = data
+    if (userRol === 'c3a2a366-5d3b-4f22-9667-290012e2a190') {
         const response = await Users.update({
-            ...newData
-            
-            },{
-                where:{
-                    id: userId
-                }
-            })
-            return response
-    }else{
-        const {password,id,verified,role, ...newData} = data
+            ...resOfProperties,
+            role_id
+
+        }, {
+            where: {
+                id: userId
+            }
+        })
+        return response
+    } else {
+
         const response = await Users.update({
-            ...newData
-            
-            },{
-                where:{
-                    id: userId
-                }
-            })
-            return response
+            resOfProperties
+
+        }, {
+            where: {
+                id: userId
+            }
+        })
+        return response
     }
 
-
- 
 }
+
+
 const getUserByEmail = async (email) => {
     const data = await Users.findOne({
         where: {
-            id: email
+            email:email
         },
         attributes: {
-            exclude: ['password', 'status']
+            exclude: [ 'createdAt', 'updatedAt', 'role_id']
         }
     })
     return data
@@ -132,16 +135,38 @@ const getUserByEmail = async (email) => {
 
 
 const editProfileImg = async (userId, imgUrl) => {
-        const response = await Users.update({
-            profileImg: imgUrl
-            
-            },{
-                where:{
-                    id: userId
-                }
-            })
-            return response
+    const response = await Users.update({
+        profileImg: imgUrl
+
+    }, {
+        where: {
+            id: userId
+        },
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt', 'role_id']
+        }
+    })
+    return response
 }
+
+const getUserWithRol = async (userId) => {
+    const data = await Users.findOne({
+        where: {
+            id: userId
+        },
+        include: {
+            model: Roles,
+            as: "role",
+            attributes: {
+                exclude: ["id", "createdAt", "updatedAt"],
+            },
+        },
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt', 'roleId']
+        }
+    })
+    return data;
+};
 
 module.exports = {
     getAllUsers,
@@ -150,5 +175,6 @@ module.exports = {
     editUser,
     deleteUser,
     getUserByEmail,
-    editProfileImg
+    editProfileImg,
+    getUserWithRol
 }

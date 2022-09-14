@@ -8,21 +8,32 @@ const Places = require('./places.models')
 
 
 const initModels = () => {
-    Users.hasOne(Roles)
-    Roles.belongsToMany(Users)
+    Roles.hasMany(Users)
+    Users.belongsTo(Roles)
 
-    Users.hasOne(UsersImg)
-    UsersImg.belongsToMany(Users)
+    UsersImg.belongsTo(Users)
+    Users.hasMany(UsersImg)
+    
+    // Users.belongsToMany(Accommodations, {through:Reservations})
+    // Accommodations.belongsToMany(Users, {through: Reservations})
+    
+    Users.hasMany(Reservations)
+    Reservations.belongsTo(Users)
 
-    Users.belongsToMany(Accommodations, {through:Reservations})
-    Accommodations.belongsToMany(Users, {through: Reservations})
+    Accommodations.hasMany(Reservations)
+    Reservations.belongsTo(Accommodations)
 
-    Accommodations.hasOne(Places)
-    Places.belongsToMany(Accommodations)
+    Accommodations.belongsTo(Places)
+    Places.hasMany(Accommodations)
 
-    Accommodations.hasOne(AccommodationsImage)
-    AccommodationsImage.belongsToMany(Accommodations)
+    Accommodations.hasMany(AccommodationsImage)
+    AccommodationsImage.belongsTo(Accommodations)
+    
 
+    Users.hasMany(Accommodations)
+    Accommodations.belongsTo(Users)
+    
+    
 
 
     //belongsTo

@@ -1,7 +1,7 @@
-const {DataTypes} = require("sequelize")
+const { DataTypes } = require("sequelize")
 
 
-const {database} = require('../utils/dataBase')
+const { database } = require('../utils/dataBase')
 
 /*
 
@@ -22,88 +22,80 @@ const Users = database.define('users', {
     id: {
         primaryKey: true,
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
     },
     firstName: {
         allowNull: false,
         type: DataTypes.STRING,
-        field: 'first_name'
-
+        field: "first_name",
     },
     lastName: {
         allowNull: false,
         type: DataTypes.STRING,
-        field: 'last_name' 
+        field: "last_name",
     },
-    gender:{
+    gender: {
         type: DataTypes.STRING,
-        allowNull: false
-    },
-    addres:{
-        type: DataTypes.STRING
-
+        allowNull: false,
     },
     email: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         unique: true,
         validate: {
-            isEmail: true
-        }
+            isEmail: true,
+        },
     },
     password: {
         allowNull: false,
         type: DataTypes.STRING,
-    
     },
     phone: {
         allowNull: false,
         type: DataTypes.STRING,
-        validate: {
-            min: 10,
-            max: 10
-        }
     },
     birthdayDate: {
         allowNull: false,
         type: DataTypes.DATEONLY,
-        field:  'birthday_date'
-    },
-    role: {
-        allowNull: false,
-        type: DataTypes.UUID,
-    },
-    profileImg: {
-        type: DataTypes.STRING,
-        validate: {
-            isUrl: true
-        },
-        field: 'profile_img'
+        field: "birthday_date",
     },
     dni: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+    },
+    roleId: {
+        allowNull: false,
+        type: DataTypes.UUID
+    },
+    address: {
+        type: DataTypes.STRING,
+    },
+    profileImage: {
+        type: DataTypes.STRING,
+        validate: {
+            isUrl: true,
+        },
+        field: "profile_image",
     },
     status: {
         allowNull: false,
         type: DataTypes.STRING,
-        defaultValue: 'active'
+        defaultValue: "active", //active, non-active, deleted, suspended
     },
     verified: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
     },
     createdAt: {
-        allowNull: false,
         type: DataTypes.DATE,
-        field: 'created_at'
-        
+        allowNull: false,
+        field: "created_at",
     },
-    updateAt: {
-        allowNull: false,
+    updatedAt: {
         type: DataTypes.DATE,
-        field: 'update_at'
-    }
+        allowNull: false,
+        field: "updated_at",
+    },
 
 })
 

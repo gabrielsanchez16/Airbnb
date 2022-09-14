@@ -30,6 +30,8 @@ router.route('/:id') //*
     .put(passport.authenticate('jwt', {session: false}),roleAdmindMiddleware,userServices.edit)
     .delete(passport.authenticate('jwt', {session: false}),roleAdmindMiddleware,userServices.remove)
 
+router.route('/:id/role')
+    .get(userServices.getUserWithRol)
 
     
 exports.router = router 
