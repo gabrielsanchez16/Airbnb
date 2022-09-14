@@ -1,40 +1,38 @@
-const {DataTypes} = require('sequelize')
+const { DataTypes } = require('sequelize')
 
-const {database} = require('../utils/dataBase')
+const { database } = require('../utils/dataBase')
 
 
 const Places = database.define('places', {
     id: {
-        type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false
-    },
-    continent: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    country: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.UUID,
+        allowNull: false,
     },
     city: {
+        allowNull: false,
         type: DataTypes.STRING,
-        allowNull: false
     },
     state: {
+        allowNull: false,
         type: DataTypes.STRING,
-        allowNull: false
+    },
+    country: {
+        allowNull: false,
+        type: DataTypes.STRING,
+    },
+    continent: {
+        allowNull: false,
+        type: DataTypes.STRING,
     },
     createdAt: {
-        allowNull: false,
         type: DataTypes.DATE,
-        field: 'created_at'
+        field: "created_at",
     },
     updatedAt: {
-        allowNull: false,
         type: DataTypes.DATE,
-        field: 'updated_at'
-    }
+        field: "updated_at",
+    },
 })
 
 

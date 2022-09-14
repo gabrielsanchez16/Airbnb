@@ -1,61 +1,64 @@
-const {DataTypes} = require('sequelize')
+const { DataTypes } = require('sequelize')
 
-const {database} = require('../utils/dataBase')
+const { database } = require('../utils/dataBase')
 
 
 const Accommodations = database.define('accommodations', {
     id: {
-        type: DataTypes.UUID,
         primaryKey: true,
+        type: DataTypes.UUID,
         allowNull: false
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.STRING
     },
     description: {
-        type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.TEXT
     },
-    guest: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+    guests: {
+        allowNull: false,
+        type: DataTypes.INTEGER
     },
     rooms: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.INTEGER
     },
     beds: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.INTEGER
     },
     bathrooms: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.DECIMAL
     },
     price: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: false,
+        type: DataTypes.FLOAT
     },
     hostId: {
-        type: DataTypes.UUID,
         allowNull: false,
-        field: 'host_id'
+        type: DataTypes.UUID, field: "userId"
     },
     score: {
-        type:DataTypes.FLOAT,
-        allowNull: false
-    },
-    placesId: {
-        type: DataTypes.UUID,
         allowNull: false,
-        field: 'places_id'
+        type: DataTypes.FLOAT
+    },
+    placeId: {
+        allowNull: false,
+        type: DataTypes.UUID
     },
     commision: {
-        type: DataTypes.FLOAT,
-        allowNull: false
-    } 
-
+        allowNull: false,
+        type: DataTypes.FLOAT
+    },
+    isActive: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        field: "is_active",
+    },
 })
 
 
