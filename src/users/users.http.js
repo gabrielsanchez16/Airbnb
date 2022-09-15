@@ -9,7 +9,7 @@ const getAll = (req, res) => {
                 users: response,
             });
         })
-        .catch(err => res.status(400).json({ message: err }))
+        .catch(err => res.status(400).json({ message: err.message}))
 };
 
 const getById = (req, res) => {
@@ -20,7 +20,7 @@ const getById = (req, res) => {
         .then((response) => {
             res.status(200).json(response);
         })
-        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+        .catch(err => res.status(400).json({ message: err.message }))
 };
 
 const register = (req, res) => {
@@ -32,9 +32,10 @@ const register = (req, res) => {
         !data.lastName ||
         !data.gender ||
         !data.email ||
-        !data.password ||
         !data.phone ||
-        !data.birthdayDate
+        !data.profileImg ||
+        !data.addres ||
+        !data.status 
     ) {
         return res.status(400).json({
             message: "All fiels must be completed",
@@ -43,9 +44,11 @@ const register = (req, res) => {
                 lastName: "string",
                 gender: "string",
                 email: "example@gmail.com",
-                password: "string",
                 phone: "string",
+                profileImg: "example.com/img/example.png",
                 birthdayDate: "DD/MM/YYYY",
+                addres: "string",
+                status: "string",
             },
         });
     } else {
@@ -57,7 +60,7 @@ const register = (req, res) => {
                     user: response,
                 });
             })
-            .catch(err => res.status(400).json({ message: err.errors}))
+            .catch(err => res.status(400).json({ message: err.message}))
     }
 };
 
@@ -72,7 +75,7 @@ const remove = (req, res) => {
                 res.status(400).json({ message: "invalid ID" });
             }
         })
-        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+        .catch(err => res.status(400).json({ message: err.message }))
 };
 
 const edit = (req, res) => {
@@ -115,7 +118,7 @@ const edit = (req, res) => {
                     user: response,
                 });
             })
-            .catch(err => res.status(400).json({ message: err.errors[0].message }))
+            .catch(err => res.status(400).json({ message: err.message }))
     }
 };
 
@@ -159,7 +162,7 @@ const editMyUser = (req, res) => {
                     user: response,
                 });
             })
-            .catch(err => res.status(400).json({ message: err.errors[0].message }))
+            .catch(err => res.status(400).json({ message: err.message }))
 
     }
 };
@@ -174,7 +177,7 @@ const deleteMyUser = (req, res) => {
                 return res.status(400).json({ message: "Invalid id" });
             }
         })
-        .catch(err => res.status(400).json({ message: err.errors[0].message }))
+        .catch(err => res.status(400).json({ message: err.message }))
 
 }
 

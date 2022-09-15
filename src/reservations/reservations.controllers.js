@@ -7,17 +7,18 @@ const getAllReservations = async() => {
     const data = await Reservations.findAll({
         include: [
             {
-                model: Users,
-                attributes: {
-                    exclude: ['password', 'createdAt', 'updatedAt', 'roleId']
-                }
-            },
-            {
                 model: Accommodations,
                 attributes: {
                     exclude: ['createdAt', 'updatedAt', 'userId', 'placeId', 'hostId']
                 }
+            },{
+                model: Users,
+                as: 'user',
+                attributes: {
+                    exclude: ['password', 'createdAt', 'updatedAt', 'roleId']
+                }
             }
+            
         ],
         attributes: {
             exclude: ['createdAt', 'updatedAt']
@@ -37,8 +38,56 @@ const createReservation = async(data, userId, accommodationId) => {
     return newReservation
 }
 
+const getReservationById = async(id)=> {
+    const data = await Reservations.findOne({
+        where: {
+            id: id
+        },
+        include: [{
+            model: Users,
+            attributes: {
+                exclude: ["createdAt", "updatedAt", "password",'roleId'],
+            }
+        },{
+            model: Accommodations,
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'userId', 'placeId', 'hostId']
+            }
+        }],
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+    return data
+}
+
+const updateReservation = async(data, idUser) => {
+    const {userId,id,score,accommodationId, ...restOfData} = data
+    const response = await Reservations.update(restOfData,
+    {
+        where: {
+            id: idUser
+        }
+    })
+
+    return response
+}
+
+const deleteReservation = async (id) => {
+    const data = await Reservations.destroy({
+        where: {
+            id:id
+        }
+    })
+
+    return data
+}
+
 
 module.exports = {
     createReservation,
-    getAllReservations
+    getAllReservations,
+    getReservationById,
+    updateReservation,
+    deleteReservation
 }

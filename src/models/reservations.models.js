@@ -14,7 +14,6 @@ const Reservations = database.define('reservations', {
     userId: {
         type: DataTypes.UUID,
         allowNull:false,
-        field: 'user_id',
         references: {
             model: Users,
             key: 'id'
@@ -31,7 +30,6 @@ const Reservations = database.define('reservations', {
     accommodationId:{
         type: DataTypes.UUID,
         allowNull: false,
-        field: 'accommodation_id',
         references: {
             model: Accommodations,
             key: 'id'
