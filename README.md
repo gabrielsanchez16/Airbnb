@@ -95,12 +95,14 @@
 
 - /
 - - GET
-- - POST
 
 - /:id
 - - GET
 - - DELETE
 - - PUT
+
+- /:placeid/make-accommodation
+- - POST
 
 - /:id/make-reservation 
 - - POST (CREA UNA RESERVACION)

@@ -86,7 +86,7 @@ const createUser = async (data) => {
 const deleteUser = async (id) => {
     const data = await Users.destroy({
         where: {
-            id
+            id: id
         }
     })
     return data
@@ -95,11 +95,9 @@ const deleteUser = async (id) => {
 const editUser = async (userId, data, userRol) => {
     const { password, id, verified, role_id, ...resOfProperties } = data
     if (userRol === 'c3a2a366-5d3b-4f22-9667-290012e2a190') {
-        const response = await Users.update({
+        const response = await Users.update(
             ...resOfProperties,
-            role_id
-
-        }, {
+            role_id, {
             where: {
                 id: userId
             }
@@ -107,10 +105,8 @@ const editUser = async (userId, data, userRol) => {
         return response
     } else {
 
-        const response = await Users.update({
-            resOfProperties
-
-        }, {
+        const response = await Users.update(
+            resOfProperties, {
             where: {
                 id: userId
             }
